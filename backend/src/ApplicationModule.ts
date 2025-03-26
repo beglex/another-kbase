@@ -2,6 +2,9 @@ import {Module, NestModule} from '@nestjs/common';
 import {TypeOrmModule} from '@nestjs/typeorm';
 
 import {config} from '@root/configuration';
+import * as controllers from '@root/controllers';
+import * as entities from '@root/entities';
+import * as services from '@root/services';
 
 const {dataSources: {postgres}} = config;
 
@@ -16,11 +19,12 @@ const {dataSources: {postgres}} = config;
             database: postgres.database,
             logging: true,
             synchronize: true,
+            entities: Object.values(entities),
         }),
-        TypeOrmModule.forFeature([]),
+        TypeOrmModule.forFeature(Object.values(entities)),
     ],
-    controllers: [],
-    providers: [],
+    controllers: Object.values(controllers),
+    providers: Object.values(services),
 })
 export class ApplicationModule implements NestModule {
     configure() {

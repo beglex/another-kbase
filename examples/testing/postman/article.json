@@ -1,0 +1,139 @@
+{
+    "info": {
+        "name": "Article API",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+        {
+            "name": "Create Article",
+            "request": {
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n  \"header\": \"Sample Article Header\",\n  \"content\": \"This is the content of the article.\",\n  \"tags\": \"tag1,tag2\",\n  \"type\": \"PUBLIC\"\n}"
+                },
+                "url": {
+                    "raw": "http://localhost:3000/api/articles",
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "3000",
+                    "path": [
+                        "api",
+                        "articles"
+                    ]
+                }
+            }
+        },
+        {
+            "name": "Get All Articles",
+            "request": {
+                "method": "GET",
+                "url": {
+                    "raw": "http://localhost:3000/api/articles",
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "3000",
+                    "path": [
+                        "api",
+                        "articles"
+                    ]
+                }
+            }
+        },
+        {
+            "name": "Get Article by ID",
+            "request": {
+                "method": "GET",
+                "url": {
+                    "raw": "http://localhost:3000/api/articles/:id",
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "3000",
+                    "path": [
+                        "api",
+                        "articles",
+                        ":id"
+                    ],
+                    "variable": [
+                        {
+                            "key": "id",
+                            "value": "replace-with-article-id"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "name": "Update Article",
+            "request": {
+                "method": "PATCH",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n  \"header\": \"Updated Article Header\",\n  \"content\": \"Updated content of the article.\",\n  \"tags\": \"updatedTag1,updatedTag2\",\n  \"type\": \"PRIVATE\"\n}"
+                },
+                "url": {
+                    "raw": "http://localhost:3000/api/articles/:id",
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "3000",
+                    "path": [
+                        "api",
+                        "articles",
+                        ":id"
+                    ],
+                    "variable": [
+                        {
+                            "key": "id",
+                            "value": "replace-with-article-id"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "name": "Delete Article",
+            "request": {
+                "method": "DELETE",
+                "url": {
+                    "raw": "http://localhost:3000/api/articles/:id",
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "3000",
+                    "path": [
+                        "api",
+                        "articles",
+                        ":id"
+                    ],
+                    "variable": [
+                        {
+                            "key": "id",
+                            "value": "replace-with-article-id"
+                        }
+                    ]
+                }
+            }
+        }
+    ]
+}
