@@ -22,14 +22,14 @@
 
 ## Configure
 
-In the `deployment` page:
+In the `deployment` directory:
 ```bash
   cp .env.sample .env
 ```
 
 Update credentials in `.env` for your requirements.
 
-In the `backend` page:
+In the `backend` directory:
 ```bash
   cp .env.sample .env
 ```
@@ -43,12 +43,12 @@ Update credentials in `.env` for your requirements.
 
 ## Start
 
-In the `deployment` page:
+In the `deployment` directory:
 ```bash
   docker-compose up -d
 ```
 
-In the `backend` page:
+In the `backend` directory:
 ```bash
   npm start
 ```

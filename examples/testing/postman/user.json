@@ -1,0 +1,66 @@
+{
+    "info": {
+        "name": "User API",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+        {
+            "name": "Sign Up",
+            "request": {
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n  \"email\": \"john.doe@example.com\",\n  \"password\": \"securepassword\"\n}"
+                },
+                "url": {
+                    "raw": "http://localhost:3000/api/users/signup",
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "3000",
+                    "path": [
+                        "api",
+                        "users",
+                        "signup"
+                    ]
+                }
+            }
+        },
+        {
+            "name": "Sign In",
+            "request": {
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n  \"email\": \"john.doe@example.com\",\n  \"password\": \"securepassword\"\n}"
+                },
+                "url": {
+                    "raw": "http://localhost:3000/api/users/signin",
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "3000",
+                    "path": [
+                        "api",
+                        "users",
+                        "signin"
+                    ]
+                }
+            }
+        }
+    ]
+}

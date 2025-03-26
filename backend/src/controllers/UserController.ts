@@ -1,7 +1,12 @@
-import {Body, Controller, Get, Param, ParseUUIDPipe, Post} from '@nestjs/common';
+import {Body, Controller, Post, Response} from '@nestjs/common';
+import {serialize} from 'cookie';
+import {Response as ExpressResponse} from 'express';
 
+import {config} from '@root/configuration';
 import {User} from '@root/entities';
 import {UserService} from '@root/services';
+
+const {session: {lifetime: maxAge}} = config;
 
 @Controller('/api/users')
 export class UserController {
@@ -10,22 +15,23 @@ export class UserController {
     ) {
     }
 
-    @Post()
-    async create(
-        @Body() body: User,
+    @Post('signup')
+    async signUp(
+        @Body() body: Omit<User, 'id'>,
     ) {
-        return this.service.create(body);
+        return this.service.signUp(body);
     }
 
-    @Get()
-    get() {
-        return this.service.get();
-    }
-
-    @Get(':id')
-    getOne(
-        @Param('id', ParseUUIDPipe) id: User['id'],
+    @Post('signin')
+    async signIn(
+        @Body() body: Pick<User, 'email' | 'password'>,
+        @Response() response: ExpressResponse,
     ) {
-        return this.service.getOne(id);
+        const result = await this.service.signIn(body) as User;
+
+        response.removeHeader('Set-Cookie');
+        response.header('Set-Cookie', serialize('token', User.sign(result), {maxAge, path: '/', sameSite: 'lax'}));
+
+        response.send(result);
     }
 }

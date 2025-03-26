@@ -1,4 +1,4 @@
-import {Injectable, UnauthorizedException} from '@nestjs/common';
+import {ConflictException, Injectable, UnauthorizedException} from '@nestjs/common';
 import {InjectRepository} from '@nestjs/typeorm';
 import {Repository} from 'typeorm';
 
@@ -12,7 +12,12 @@ export class UserService {
     ) {
     }
 
-    async create(body: Omit<User, 'id'>) {
+    async signUp(body: Omit<User, 'id'>) {
+        const existing = await this.repo.findOne({where: {email: body.email}});
+        if (existing) {
+            throw new ConflictException(User.name);
+        }
+
         if (body.password) {
             body.password = User.hashPassword(body.password);
         }
@@ -20,21 +25,13 @@ export class UserService {
         return this.repo.save(body);
     }
 
-    async getOne(id: User['id']) {
-        return this.repo.findOne({where: {id}});
-    }
-
-    async get() {
-        return this.repo.find();
-    }
-
     async signIn({email, password}: Partial<User>) {
-        const user = await this.repo.findOne({where: {email}});
+        const existing = await this.repo.findOne({where: {email}});
 
-        if (User.hashPassword(password) !== user?.password) {
+        if (User.hashPassword(password) !== existing?.password) {
             throw new UnauthorizedException(User.name);
         }
 
-        return this.getOne(user.id);
+        return this.repo.findOne({where: {id: existing.id}});
     }
 }
