@@ -1,6 +1,6 @@
 import {Injectable, NotFoundException} from '@nestjs/common';
 import {InjectRepository} from '@nestjs/typeorm';
-import {Repository} from 'typeorm';
+import {Raw, Repository} from 'typeorm';
 
 import {Article} from '@root/entities';
 
@@ -20,7 +20,12 @@ export class ArticleService {
         return this.repo.findOne({where: {id}});
     }
 
-    async get() {
+    async get(tags = '') {
+        if (tags) {
+            return this.repo.find(
+                {where: {tags: Raw(alias => `${alias} && ARRAY[:...tags]::varchar[]`, {tags: tags.split(',')})}});
+        }
+
         return this.repo.find();
     }
 

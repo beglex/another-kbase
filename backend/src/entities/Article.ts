@@ -1,4 +1,4 @@
-import {IsEnum, IsOptional, IsString} from 'class-validator';
+import {IsArray, IsEnum, IsOptional, IsString} from 'class-validator';
 import {Column, Entity, PrimaryGeneratedColumn} from 'typeorm';
 
 import {ArticleType} from '@root/types';
@@ -17,9 +17,9 @@ export class Article {
     @IsOptional()
     content: string;
 
-    @Column({nullable: true})
-    @IsString()
-    tags: string;
+    @Column({type: 'varchar', array: true})
+    @IsArray()
+    tags: string[];
 
     @Column({default: ArticleType.PRIVATE})
     @IsEnum(ArticleType)

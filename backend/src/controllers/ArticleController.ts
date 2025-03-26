@@ -1,4 +1,4 @@
-import {Body, Controller, Delete, Get, Param, ParseUUIDPipe, Patch, Post} from '@nestjs/common';
+import {Body, Controller, Delete, Get, Param, ParseUUIDPipe, Patch, Post, Query} from '@nestjs/common';
 
 import {Article} from '@root/entities';
 import {ArticleService} from '@root/services';
@@ -19,8 +19,9 @@ export class ArticleController {
 
     @Get()
     get(
+        @Query('tags') tags: string, // CSVs, e.g. '?tags=tag1,tag2' TODO add swagger and validation
     ) {
-        return this.service.get();
+        return this.service.get(tags);
     }
 
     @Get(':id')
