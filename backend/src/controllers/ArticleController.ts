@@ -1,7 +1,11 @@
-import {Body, Controller, Delete, Get, Param, ParseUUIDPipe, Patch, Post, Query} from '@nestjs/common';
+import {
+    Body, Controller, Delete, Get, Param, ParseUUIDPipe, Patch, Post, Query, Request, UseGuards,
+} from '@nestjs/common';
 
 import {Article} from '@root/entities';
+import {AuthorizationGuard} from '@root/guards';
 import {ArticleService} from '@root/services';
+import {ApplicationRequest} from '@root/types';
 
 @Controller('/api/articles')
 export class ArticleController {
@@ -11,6 +15,7 @@ export class ArticleController {
     }
 
     @Post()
+    @UseGuards(AuthorizationGuard)
     async create(
         @Body() body: Article,
     ) {
@@ -20,11 +25,13 @@ export class ArticleController {
     @Get()
     get(
         @Query('tags') tags: string, // CSVs, e.g. '?tags=tag1,tag2' TODO add swagger and validation
+        @Request() request: ApplicationRequest,
     ) {
-        return this.service.get(tags);
+        return this.service.get(tags, request.data?.isAuthorized);
     }
 
     @Get(':id')
+    @UseGuards(AuthorizationGuard)
     getOne(
         @Param('id', ParseUUIDPipe) id: Article['id'],
     ) {
@@ -32,6 +39,7 @@ export class ArticleController {
     }
 
     @Patch(':id')
+    @UseGuards(AuthorizationGuard)
     async update(
         @Param('id', ParseUUIDPipe) id: Article['id'],
         @Body() body: Partial<Article>,
@@ -40,6 +48,7 @@ export class ArticleController {
     }
 
     @Delete(':id')
+    @UseGuards(AuthorizationGuard)
     delete(
         @Param('id', ParseUUIDPipe) id: Article['id'],
     ) {

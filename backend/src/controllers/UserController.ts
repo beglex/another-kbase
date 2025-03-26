@@ -1,10 +1,10 @@
 import {Body, Controller, Post, Response} from '@nestjs/common';
 import {serialize} from 'cookie';
-import {Response as ExpressResponse} from 'express';
 
 import {config} from '@root/configuration';
 import {User} from '@root/entities';
 import {UserService} from '@root/services';
+import {ApplicationResponse} from '@root/types';
 
 const {session: {lifetime: maxAge}} = config;
 
@@ -25,7 +25,7 @@ export class UserController {
     @Post('signin')
     async signIn(
         @Body() body: Pick<User, 'email' | 'password'>,
-        @Response() response: ExpressResponse,
+        @Response() response: ApplicationResponse,
     ) {
         const result = await this.service.signIn(body) as User;
 

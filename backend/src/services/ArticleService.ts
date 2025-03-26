@@ -1,8 +1,9 @@
 import {Injectable, NotFoundException} from '@nestjs/common';
 import {InjectRepository} from '@nestjs/typeorm';
-import {Raw, Repository} from 'typeorm';
+import {FindOptionsWhere, Raw, Repository} from 'typeorm';
 
 import {Article} from '@root/entities';
+import {ArticleType} from '@root/types';
 
 @Injectable()
 export class ArticleService {
@@ -20,13 +21,16 @@ export class ArticleService {
         return this.repo.findOne({where: {id}});
     }
 
-    async get(tags = '') {
+    async get(tags = '', isAuthorized = false) {
+        const where: Partial<FindOptionsWhere<Article>> = {};
         if (tags) {
-            return this.repo.find(
-                {where: {tags: Raw(alias => `${alias} && ARRAY[:...tags]::varchar[]`, {tags: tags.split(',')})}});
+            where.tags = Raw(alias => `${alias} && ARRAY[:...tags]::varchar[]`, {tags: tags.split(',')});
+        }
+        if (!isAuthorized) {
+            where.type = ArticleType.PUBLIC;
         }
 
-        return this.repo.find();
+        return this.repo.find({where});
     }
 
     async update(id: Article['id'], body: Partial<Article>) {

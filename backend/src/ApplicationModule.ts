@@ -1,9 +1,11 @@
-import {Module, NestModule} from '@nestjs/common';
+import {MiddlewareConsumer, Module, NestModule, RequestMethod} from '@nestjs/common';
 import {TypeOrmModule} from '@nestjs/typeorm';
 
 import {config} from '@root/configuration';
 import * as controllers from '@root/controllers';
 import * as entities from '@root/entities';
+import * as guards from '@root/guards';
+import {AuthenticationMiddleware} from '@root/middleware';
 import * as services from '@root/services';
 
 const {dataSources: {postgres}} = config;
@@ -24,9 +26,13 @@ const {dataSources: {postgres}} = config;
         TypeOrmModule.forFeature(Object.values(entities)),
     ],
     controllers: Object.values(controllers),
-    providers: Object.values(services),
+    providers: [...Object.values(services), ...Object.values(guards)],
 })
 export class ApplicationModule implements NestModule {
-    configure() {
+    configure(consumer: MiddlewareConsumer) {
+        consumer.apply(AuthenticationMiddleware)
+            .forRoutes(
+                controllers.ArticleController,
+            );
     }
 }

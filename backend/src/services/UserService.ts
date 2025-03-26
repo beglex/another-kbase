@@ -1,6 +1,6 @@
 import {ConflictException, Injectable, UnauthorizedException} from '@nestjs/common';
 import {InjectRepository} from '@nestjs/typeorm';
-import {Repository} from 'typeorm';
+import {FindOneOptions, Repository} from 'typeorm';
 
 import {User} from '@root/entities';
 
@@ -33,5 +33,9 @@ export class UserService {
         }
 
         return this.repo.findOne({where: {id: existing.id}});
+    }
+
+    findOne(options: FindOneOptions<User>) {
+        return this.repo.findOne(options);
     }
 }
