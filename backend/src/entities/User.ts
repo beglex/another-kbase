@@ -7,6 +7,8 @@ import {Column, Entity, PrimaryGeneratedColumn} from 'typeorm';
 
 import {config} from '@root/configuration';
 
+const {session: {lifetime: exp, secret}} = config;
+
 @Entity('user')
 export class User {
     @PrimaryGeneratedColumn('uuid')
@@ -25,6 +27,6 @@ export class User {
     }
 
     static sign({id, email}: Pick<User, 'id' | 'email'>) {
-        return sign({id, email, exp: config.session.lifetime}, config.session.secret);
+        return sign({id, email, exp}, secret);
     }
 }
